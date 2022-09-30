@@ -1,9 +1,12 @@
-const RegexUtils = require("./utils/RegexUtils");
-const InstructionUtils = require("./utils/InstructionUtils");
-const CompilerError = require("./CompilerError");
+import RegexUtils from "./utils/RegexUtils";
+import InstructionUtils from "./utils/InstructionUtils";
+import CompilerError from "./CompilerError";
 
-class MSP430Assembler {
+export default class MSP430Assembler {
 
+    constructor(){
+
+    }
     parseToLines(str) {
 
         if (!str) {
@@ -212,5 +215,3 @@ class MSP430Assembler {
         };
     }
 }
-
-module.exports = MSP430Assembler;

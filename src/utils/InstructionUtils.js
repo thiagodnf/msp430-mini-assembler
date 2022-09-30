@@ -1,8 +1,8 @@
-const CompilerError = require("../CompilerError");
-const RegexUtils = require("./RegexUtils");
-const Instruction = require("../Instruction");
+import CompilerError from "../CompilerError";
+import RegexUtils from "./RegexUtils";
+import Instruction from "../Instruction";
 
-class InstructionUtils {
+export default class InstructionUtils {
 
     static getInstruction(line) {
 

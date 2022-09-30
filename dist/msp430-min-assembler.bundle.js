@@ -9,232 +9,17 @@
 		root["msp430-min-assembler"] = factory();
 })(self, () => {
 return /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ([
-/* 0 */
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-const RegexUtils = __webpack_require__(1);
-const InstructionUtils = __webpack_require__(2);
-const CompilerError = __webpack_require__(3);
-
-class MSP430Assembler {
-
-    parseToLines(str) {
-
-        if (!str) {
-            throw new Error("String should not be undefined");
-        }
-
-        return str
-            .trim()
-            .split("\n")
-            .map(e => e.trim())
-            .map((el, i) => [i, el])
-            .map(e => [e[0], e[1].replace(/;(.*)/g, "")])
-            .map(e => [e[0], e[1].trim()])
-            .filter(el => el[1].length !== 0);
-    }
-
-    sintaxAnalysis(line) {
-
-        if (line[1].mnemonic === "MOV") {
-
-            const op = line[1].operands;
-
-            if (RegexUtils.isAddress(op[0]) && RegexUtils.isAddress(op[1])) {
-                throw new Error(`There is a error on line ${line[0]} ${line[1]}. You may not move inside memory`);
-            }
-        }
-    }
-
-    findNextInstructions(instructions, startIndex) {
-
-        for (let i = startIndex; i < instructions.length; i++) {
-
-            const instruction = instructions[i];
-
-            if (instruction[1].mnemonic === "LABEL") {
-                continue;
-            }
-
-            return instruction[0];
-        }
-
-        throw new CompilerError("labels", -1, `Label ${instructions[startIndex]} is not associated to an instruction`);
-    }
-
-    runLexicalAnalysis(lines) {
-
-        let errors = [];
-        let instructions = [];
-
-        for (const line of lines) {
-            try {
-                instructions.push(InstructionUtils.getInstruction(line));
-            } catch (error) {
-                errors.push(error);
-            }
-        }
-
-        if (errors.length > 0) {
-            throw errors;
-        }
-
-        return instructions;
-    }
-
-    runSyntaticAnalysis(instructions) {
-
-        let errors = [];
-
-        for (const instruction of instructions) {
-            try {
-                this.sintaxAnalysis(instruction);
-            } catch (error) {
-                errors.push(new CompilerError("syntax", instruction[0], error.message));
-            }
-        }
-
-        if (errors.length > 0) {
-            throw errors;
-        }
-
-        return instructions;
-    }
-
-    runLinesReArrangement(instructions) {
-
-        let lineNumber = 0;
-
-        for (let i = 0; i < instructions.length; i++) {
-
-            let instruction = instructions[i];
-
-            if (instruction[1].mnemonic === "LABEL") {
-                instruction[0] = -1;
-            } else {
-                instruction[0] = lineNumber++;
-            }
-        }
-
-        return instructions;
-    }
-
-    runLabelMaps(instructions) {
-
-        let labels = {};
-        let errors = [];
-
-        for (let i = 0; i < instructions.length; i++) {
-
-            const instruction = instructions[i];
-
-            let label = instruction[1].label;
-
-            if (label) {
-
-                if (labels[label]) {
-                    errors.push(new CompilerError("labels", instruction[0], `Line ${instruction[0]}: Label '${label}' is duplicated`));
-                } else {
-                    try {
-                        labels[label] = this.findNextInstructions(instructions, i);
-                    } catch (error) {
-                        errors.push(error);
-                    }
-                }
-            }
-        }
-
-        if (!("main" in labels)) {
-            errors.push(new CompilerError("labels", 1, "Missing the 'main' label"));
-        }
-
-        if (errors.length > 0) {
-            throw errors;
-        }
-
-        return labels;
-    }
-
-    runReplaceLabels(instructions, labels) {
-
-        let errors = [];
-
-        for (let i = 0; i < instructions.length; i++) {
-
-            const instruction = instructions[i];
-
-            if (["JN", "JZ", "JMP"].includes(instruction[1].mnemonic)) {
-
-                const dest = instruction[1].operands[0];
-
-                if (dest in labels) {
-                    instruction[1].operands[0] = labels[dest];
-                } else {
-                    errors.push(new CompilerError("labels", instruction[0], `Line ${instruction}: Label '${dest}' not found`));
-                }
-            }
-        }
-
-        if (errors.length > 0) {
-            throw errors;
-        }
-
-        return instructions;
-    }
-
-    runRemoveAllLabels(instructions) {
-
-        let output = [];
-
-        for (const instruction of instructions) {
-
-            if (instruction[1].mnemonic !== "LABEL") {
-                output.push(instruction[1]);
-            }
-        }
-
-        return output;
-    }
-
-    compile(str) {
-
-        let lines = this.parseToLines(str);
-
-        if (lines.length === 0) {
-            throw new Error("String should not be empty");
-        }
-
-        let instructions = [];
-        let errors = [];
-
-        try {
-
-            instructions = this.runLexicalAnalysis(lines);
-            instructions = this.runSyntaticAnalysis(instructions);
-            instructions = this.runLinesReArrangement(instructions);
-            const labels = this.runLabelMaps(instructions);
-            instructions = this.runReplaceLabels(instructions, labels);
-            instructions = this.runRemoveAllLabels(instructions);
-
-        } catch (errs) {
-            errors = errs;
-        }
-
-        return {
-            instructions: instructions,
-            errors: errors
-        };
-    }
-}
-
-module.exports = MSP430Assembler;
-
-
-/***/ }),
+/* 0 */,
 /* 1 */
-/***/ ((module) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ RegexUtils)
+/* harmony export */ });
+/* module decorator */ module = __webpack_require__.hmd(module);
 class RegexUtils {
 
     static ID = "[a-zA-Z]+\\w*";
@@ -352,67 +137,75 @@ module.exports = RegexUtils;
 
 /***/ }),
 /* 2 */
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
 
-const CompilerError = __webpack_require__(3);
-const RegexUtils = __webpack_require__(1);
-const Instruction = __webpack_require__(4);
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ InstructionUtils)
+/* harmony export */ });
+/* harmony import */ var _CompilerError__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(3);
+/* harmony import */ var _RegexUtils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(1);
+/* harmony import */ var _Instruction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(4);
+/* module decorator */ module = __webpack_require__.hmd(module);
+
+
+
 
 class InstructionUtils {
 
     static getInstruction(line) {
 
-        if (RegexUtils.isLabel(line[1])) {
+        if (_RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].isLabel(line[1])) {
 
-            const p = RegexUtils.match(RegexUtils.LABEL, line[1]);
+            const p = _RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].match(_RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].LABEL, line[1]);
 
-            return [line[0], new Instruction(p[0], "LABEL")];
+            return [line[0], new _Instruction__WEBPACK_IMPORTED_MODULE_2__["default"](p[0], "LABEL")];
         }
-        if (RegexUtils.isMov(line[1])) {
+        if (_RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].isMov(line[1])) {
 
-            const p = RegexUtils.match(RegexUtils.MOV, line[1]);
+            const p = _RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].match(_RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].MOV, line[1]);
 
-            return [line[0], new Instruction(p[1], p[2], [p[3], p[11]])];
+            return [line[0], new _Instruction__WEBPACK_IMPORTED_MODULE_2__["default"](p[1], p[2], [p[3], p[11]])];
         }
-        if (RegexUtils.isAdd(line[1])) {
+        if (_RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].isAdd(line[1])) {
 
-            const p = RegexUtils.match(RegexUtils.ADD, line[1]);
+            const p = _RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].match(_RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].ADD, line[1]);
 
-            return [line[0], new Instruction(p[1], p[2], [p[3], p[10]])];
+            return [line[0], new _Instruction__WEBPACK_IMPORTED_MODULE_2__["default"](p[1], p[2], [p[3], p[10]])];
         }
-        if (RegexUtils.isSub(line[1])) {
+        if (_RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].isSub(line[1])) {
 
-            const p = RegexUtils.match(RegexUtils.SUB, line[1]);
+            const p = _RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].match(_RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].SUB, line[1]);
 
-            return [line[0], new Instruction(p[1], p[2], [p[3], p[10]])];
+            return [line[0], new _Instruction__WEBPACK_IMPORTED_MODULE_2__["default"](p[1], p[2], [p[3], p[10]])];
         }
-        if (RegexUtils.isCmp(line[1])) {
+        if (_RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].isCmp(line[1])) {
 
-            const p = RegexUtils.match(RegexUtils.CMP, line[1]);
+            const p = _RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].match(_RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].CMP, line[1]);
 
-            return [line[0], new Instruction(p[1], p[2], [p[3], p[10]])];
+            return [line[0], new _Instruction__WEBPACK_IMPORTED_MODULE_2__["default"](p[1], p[2], [p[3], p[10]])];
         }
-        if (RegexUtils.isJmp(line[1])) {
+        if (_RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].isJmp(line[1])) {
 
-            const p = RegexUtils.match(RegexUtils.JMP, line[1]);
+            const p = _RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].match(_RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].JMP, line[1]);
 
-            return [line[0], new Instruction(p[1], p[2], [p[3]])];
+            return [line[0], new _Instruction__WEBPACK_IMPORTED_MODULE_2__["default"](p[1], p[2], [p[3]])];
         }
-        if (RegexUtils.isJz(line[1])) {
+        if (_RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].isJz(line[1])) {
 
-            const p = RegexUtils.match(RegexUtils.JZ, line[1]);
+            const p = _RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].match(_RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].JZ, line[1]);
 
-            return [line[0], new Instruction(p[1], p[2], [p[3]])];
+            return [line[0], new _Instruction__WEBPACK_IMPORTED_MODULE_2__["default"](p[1], p[2], [p[3]])];
         }
-        if (RegexUtils.isJn(line[1])) {
+        if (_RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].isJn(line[1])) {
 
-            const p = RegexUtils.match(RegexUtils.JN, line[1]);
+            const p = _RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].match(_RegexUtils__WEBPACK_IMPORTED_MODULE_1__["default"].JN, line[1]);
 
-            return [line[0], new Instruction(p[1], p[2], [p[3]])];
+            return [line[0], new _Instruction__WEBPACK_IMPORTED_MODULE_2__["default"](p[1], p[2], [p[3]])];
         }
 
 
-        throw new CompilerError("lexical", line[0], `Line ${line[0]}: the instruction is invalid`);
+        throw new _CompilerError__WEBPACK_IMPORTED_MODULE_0__["default"]("lexical", line[0], `Line ${line[0]}: the instruction is invalid`);
     }
 
     static print(instructions){
@@ -432,8 +225,12 @@ module.exports = InstructionUtils;
 
 /***/ }),
 /* 3 */
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ CompilerError)
+/* harmony export */ });
 class CompilerError extends Error {
 
     type;
@@ -448,13 +245,15 @@ class CompilerError extends Error {
     }
 }
 
-module.exports = CompilerError;
-
 
 /***/ }),
 /* 4 */
-/***/ ((module) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ Instruction)
+/* harmony export */ });
 class Instruction {
 
     label;
@@ -479,8 +278,6 @@ class Instruction {
     }
 }
 
-module.exports = Instruction;
-
 
 /***/ })
 /******/ 	]);
@@ -497,25 +294,296 @@ module.exports = Instruction;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			// no module.id needed
-/******/ 			// no module.loaded needed
+/******/ 			id: moduleId,
+/******/ 			loaded: false,
 /******/ 			exports: {}
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
 /******/ 	
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+/******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
 /******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __webpack_require__(0);
+/******/ 	/* webpack/runtime/harmony module decorator */
+/******/ 	(() => {
+/******/ 		__webpack_require__.hmd = (module) => {
+/******/ 			module = Object.create(module);
+/******/ 			if (!module.children) module.children = [];
+/******/ 			Object.defineProperty(module, 'exports', {
+/******/ 				enumerable: true,
+/******/ 				set: () => {
+/******/ 					throw new Error('ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: ' + module.id);
+/******/ 				}
+/******/ 			});
+/******/ 			return module;
+/******/ 		};
+/******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ MSP430Assembler)
+/* harmony export */ });
+/* harmony import */ var _utils_RegexUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _utils_InstructionUtils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
+/* harmony import */ var _CompilerError__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3);
+
+
+
+
+class MSP430Assembler {
+
+    constructor(){
+
+    }
+    parseToLines(str) {
+
+        if (!str) {
+            throw new Error("String should not be undefined");
+        }
+
+        return str
+            .trim()
+            .split("\n")
+            .map(e => e.trim())
+            .map((el, i) => [i, el])
+            .map(e => [e[0], e[1].replace(/;(.*)/g, "")])
+            .map(e => [e[0], e[1].trim()])
+            .filter(el => el[1].length !== 0);
+    }
+
+    sintaxAnalysis(line) {
+
+        if (line[1].mnemonic === "MOV") {
+
+            const op = line[1].operands;
+
+            if (_utils_RegexUtils__WEBPACK_IMPORTED_MODULE_0__["default"].isAddress(op[0]) && _utils_RegexUtils__WEBPACK_IMPORTED_MODULE_0__["default"].isAddress(op[1])) {
+                throw new Error(`There is a error on line ${line[0]} ${line[1]}. You may not move inside memory`);
+            }
+        }
+    }
+
+    findNextInstructions(instructions, startIndex) {
+
+        for (let i = startIndex; i < instructions.length; i++) {
+
+            const instruction = instructions[i];
+
+            if (instruction[1].mnemonic === "LABEL") {
+                continue;
+            }
+
+            return instruction[0];
+        }
+
+        throw new _CompilerError__WEBPACK_IMPORTED_MODULE_2__["default"]("labels", -1, `Label ${instructions[startIndex]} is not associated to an instruction`);
+    }
+
+    runLexicalAnalysis(lines) {
+
+        let errors = [];
+        let instructions = [];
+
+        for (const line of lines) {
+            try {
+                instructions.push(_utils_InstructionUtils__WEBPACK_IMPORTED_MODULE_1__["default"].getInstruction(line));
+            } catch (error) {
+                errors.push(error);
+            }
+        }
+
+        if (errors.length > 0) {
+            throw errors;
+        }
+
+        return instructions;
+    }
+
+    runSyntaticAnalysis(instructions) {
+
+        let errors = [];
+
+        for (const instruction of instructions) {
+            try {
+                this.sintaxAnalysis(instruction);
+            } catch (error) {
+                errors.push(new _CompilerError__WEBPACK_IMPORTED_MODULE_2__["default"]("syntax", instruction[0], error.message));
+            }
+        }
+
+        if (errors.length > 0) {
+            throw errors;
+        }
+
+        return instructions;
+    }
+
+    runLinesReArrangement(instructions) {
+
+        let lineNumber = 0;
+
+        for (let i = 0; i < instructions.length; i++) {
+
+            let instruction = instructions[i];
+
+            if (instruction[1].mnemonic === "LABEL") {
+                instruction[0] = -1;
+            } else {
+                instruction[0] = lineNumber++;
+            }
+        }
+
+        return instructions;
+    }
+
+    runLabelMaps(instructions) {
+
+        let labels = {};
+        let errors = [];
+
+        for (let i = 0; i < instructions.length; i++) {
+
+            const instruction = instructions[i];
+
+            let label = instruction[1].label;
+
+            if (label) {
+
+                if (labels[label]) {
+                    errors.push(new _CompilerError__WEBPACK_IMPORTED_MODULE_2__["default"]("labels", instruction[0], `Line ${instruction[0]}: Label '${label}' is duplicated`));
+                } else {
+                    try {
+                        labels[label] = this.findNextInstructions(instructions, i);
+                    } catch (error) {
+                        errors.push(error);
+                    }
+                }
+            }
+        }
+
+        if (!("main" in labels)) {
+            errors.push(new _CompilerError__WEBPACK_IMPORTED_MODULE_2__["default"]("labels", 1, "Missing the 'main' label"));
+        }
+
+        if (errors.length > 0) {
+            throw errors;
+        }
+
+        return labels;
+    }
+
+    runReplaceLabels(instructions, labels) {
+
+        let errors = [];
+
+        for (let i = 0; i < instructions.length; i++) {
+
+            const instruction = instructions[i];
+
+            if (["JN", "JZ", "JMP"].includes(instruction[1].mnemonic)) {
+
+                const dest = instruction[1].operands[0];
+
+                if (dest in labels) {
+                    instruction[1].operands[0] = labels[dest];
+                } else {
+                    errors.push(new _CompilerError__WEBPACK_IMPORTED_MODULE_2__["default"]("labels", instruction[0], `Line ${instruction}: Label '${dest}' not found`));
+                }
+            }
+        }
+
+        if (errors.length > 0) {
+            throw errors;
+        }
+
+        return instructions;
+    }
+
+    runRemoveAllLabels(instructions) {
+
+        let output = [];
+
+        for (const instruction of instructions) {
+
+            if (instruction[1].mnemonic !== "LABEL") {
+                output.push(instruction[1]);
+            }
+        }
+
+        return output;
+    }
+
+    compile(str) {
+
+        let lines = this.parseToLines(str);
+
+        if (lines.length === 0) {
+            throw new Error("String should not be empty");
+        }
+
+        let instructions = [];
+        let errors = [];
+
+        try {
+
+            instructions = this.runLexicalAnalysis(lines);
+            instructions = this.runSyntaticAnalysis(instructions);
+            instructions = this.runLinesReArrangement(instructions);
+            const labels = this.runLabelMaps(instructions);
+            instructions = this.runReplaceLabels(instructions, labels);
+            instructions = this.runRemoveAllLabels(instructions);
+
+        } catch (errs) {
+            errors = errs;
+        }
+
+        return {
+            instructions: instructions,
+            errors: errors
+        };
+    }
+}
+
+})();
+
 /******/ 	return __webpack_exports__;
 /******/ })()
 ;

@@ -1,4 +1,4 @@
-class Instruction {
+export default class Instruction {
 
     label;
 
@@ -21,5 +21,3 @@ class Instruction {
         return `${this.label || ""}\t${this.mnemonic} ${this.operands.join(",")}`;
     }
 }
-
-module.exports = Instruction;

@@ -1,4 +1,4 @@
-const MSP430Assembler = require("../src/MSP430Assembler");
+import MSP430Assembler from "../src/MSP430Assembler";
 
 test("it should throw exception when undefined", () => {
 

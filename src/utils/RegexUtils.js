@@ -1,4 +1,4 @@
-class RegexUtils {
+export default class RegexUtils {
 
     static ID = "[a-zA-Z]+\\w*";
 

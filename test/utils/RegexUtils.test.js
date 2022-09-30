@@ -1,4 +1,4 @@
-const RegexUtils = require("../../src/utils/RegexUtils");
+import RegexUtils from "../../src/utils/RegexUtils";
 
 test("string is integer", () => {
 

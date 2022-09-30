@@ -1,4 +1,4 @@
-class CompilerError extends Error {
+export default class CompilerError extends Error {
 
     type;
 
@@ -11,5 +11,3 @@ class CompilerError extends Error {
         this.lineNumber = lineNumber;
     }
 }
-
-module.exports = CompilerError;
