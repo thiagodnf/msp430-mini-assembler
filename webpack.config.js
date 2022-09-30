@@ -3,11 +3,11 @@ const path = require("path");
 module.exports = {
     mode: "none",
     entry: {
-        app: "./src/MSP430Assembler.js",
+        app: "./src/index.js",
     },
     output: {
-        filename: "msp430-min-assembler.bundle.js",
-        library: "msp430-min-assembler",
+        filename: "MSP430Assembler.js",
+        library: "MSP430Assembler",
         libraryTarget: "umd",
         path: path.resolve(__dirname, "dist")
     },
