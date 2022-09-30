@@ -12,10 +12,23 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+
+    strategy:
+      matrix:
+        node-version: [15.x]
+
     steps:
 
       - name: Checking out the project
         uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - run: npm ci
+      - run: npm run all
 
       - id: releaser
         name: New Version Decider
@@ -30,8 +43,6 @@ jobs:
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "Github Actions"
-          npm install
-          npm run all
           git .
           git commit -m "build"
 
