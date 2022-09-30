@@ -243,13 +243,12 @@ class MSP430Assembler {
 
 /***/ }),
 /* 2 */
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (/* binding */ RegexUtils)
 /* harmony export */ });
-/* module decorator */ module = __webpack_require__.hmd(module);
 class RegexUtils {
 
     static ID = "[a-zA-Z]+\\w*";
@@ -362,12 +361,10 @@ class RegexUtils {
     }
 }
 
-module.exports = RegexUtils;
-
 
 /***/ }),
 /* 3 */
-/***/ ((module, __webpack_exports__, __webpack_require__) => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -376,7 +373,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CompilerError__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4);
 /* harmony import */ var _RegexUtils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(2);
 /* harmony import */ var _Instruction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5);
-/* module decorator */ module = __webpack_require__.hmd(module);
 
 
 
@@ -450,8 +446,6 @@ class InstructionUtils {
     }
 }
 
-module.exports = InstructionUtils;
-
 
 /***/ }),
 /* 4 */
@@ -524,16 +518,13 @@ class Instruction {
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
-/******/ 			id: moduleId,
-/******/ 			loaded: false,
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
 /******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/ 	
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
 /******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
@@ -549,21 +540,6 @@ class Instruction {
 /******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
 /******/ 				}
 /******/ 			}
-/******/ 		};
-/******/ 	})();
-/******/ 	
-/******/ 	/* webpack/runtime/harmony module decorator */
-/******/ 	(() => {
-/******/ 		__webpack_require__.hmd = (module) => {
-/******/ 			module = Object.create(module);
-/******/ 			if (!module.children) module.children = [];
-/******/ 			Object.defineProperty(module, 'exports', {
-/******/ 				enumerable: true,
-/******/ 				set: () => {
-/******/ 					throw new Error('ES Modules may not assign module.exports or exports.*, Use ESM export syntax, instead: ' + module.id);
-/******/ 				}
-/******/ 			});
-/******/ 			return module;
 /******/ 		};
 /******/ 	})();
 /******/ 	
