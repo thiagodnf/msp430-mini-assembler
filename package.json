@@ -1,13 +1,13 @@
 {
-    "name": "msp430-assembler",
-    "version": "1.0.0",
+    "name": "msp430-mini-assembler",
+    "version": "0.0.1",
     "description": "",
     "main": "src/MSP430Assembler.js",
     "author": "Thiago Ferreira",
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/thiagodnf/msp430-assembler.git"
+        "url": "git+https://github.com/thiagodnf/msp430-min-assembler.git"
     },
     "scripts": {
         "dev": "nodemon --ignore dist/ --exec 'npm run lint-fix && npm run test' .",
