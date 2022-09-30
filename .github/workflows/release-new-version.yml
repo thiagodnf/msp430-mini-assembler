@@ -44,7 +44,7 @@ jobs:
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "Github Actions"
-          git add .
+          git add dist/*
           git commit -m "build"
 
 
