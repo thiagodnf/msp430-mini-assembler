@@ -1,0 +1,30 @@
+{
+    "name": "msp430-assembler",
+    "version": "1.0.0",
+    "description": "",
+    "main": "src/MSP430Assembler.js",
+    "author": "Thiago Ferreira",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/thiagodnf/msp430-assembler.git"
+    },
+    "scripts": {
+        "dev": "nodemon --ignore dist/ --exec 'npm run lint-fix && npm run test' .",
+        "lint": "npx eslint .",
+        "lint-fix": "npx eslint . --fix",
+        "prepare": "ncc build src/MSP430Assembler.js -o dist --source-map --license licenses.txt",
+        "test": "jest ./test --coverage",
+        "all": "npm run lint && npm run test && npm run prepare"
+    },
+    "engines": {
+        "node": ">=16.14.0"
+    },
+    "devDependencies": {
+        "@babel/preset-env": "7.18.0",
+        "babel-jest": "28.1.0",
+        "eslint": "8.15.0",
+        "jest": "29.1.1",
+        "nodemon": "2.0.19"
+    }
+}
