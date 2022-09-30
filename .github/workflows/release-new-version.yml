@@ -4,8 +4,10 @@ name: "Release"
 on:
   pull_request:
   push:
-    paths:
-      - 'package.json'
+    branches:
+      - "main"
+    # paths:
+    #   - 'package.json'
 
 jobs:
   release:
