@@ -109,5 +109,3 @@ export default class RegexUtils {
         return RegexUtils.test(RegexUtils.MOV, str);
     }
 }
-
-module.exports = RegexUtils;

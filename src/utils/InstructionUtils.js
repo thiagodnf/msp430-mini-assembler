@@ -70,5 +70,3 @@ export default class InstructionUtils {
         console.log(lines.join("\n"));
     }
 }
-
-module.exports = InstructionUtils;
