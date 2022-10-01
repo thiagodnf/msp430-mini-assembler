@@ -123,6 +123,7 @@ export default class Assembler {
                 } else {
                     try {
                         labels[label] = this.findNextInstructions(instructions, i);
+                        labels[label] = `[${labels[label].toString(16)}]`;
                     } catch (error) {
                         errors.push(error);
                     }
