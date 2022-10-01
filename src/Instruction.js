@@ -14,10 +14,10 @@ export default class Instruction {
     }
 
     toString() {
-        return `${this.mnemonic}\t${this.operands.join(",")}`;
+        return `${this.mnemonic} ${this.operands.join(",")}`;
     }
 
     toStringWithLabels() {
-        return `${this.label || ""}\t${this.mnemonic} ${this.operands.join(",")}`;
+        return `${this.label || ""} ${this.mnemonic} ${this.operands.join(",")}`;
     }
 }
