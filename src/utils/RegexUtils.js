@@ -4,7 +4,7 @@ export default class RegexUtils {
 
     static HEX = "0[xX][0-9a-fA-F]+";
 
-    static INT = "[-+]?\\d+";
+    static INTEGER = "[-+]?\\d+";
 
     static BIN = "0[bB][01]+";
 
@@ -29,6 +29,8 @@ export default class RegexUtils {
     static JN = "(@ID@:)?\\s*(JN)\\s+((@ID@)|(@ADDRESS@))";
 
     static JZ = "(@ID@:)?\\s*(JZ)\\s+((@ID@)|(@ADDRESS@))";
+
+    static INT = "(@ID@:)?\\s*(INT)\\s+([0-9]+h)";
 
     static test(pattern, str) {
 
@@ -55,14 +57,14 @@ export default class RegexUtils {
         pattern = pattern.replaceAll("@ID@", RegexUtils.ID);
         pattern = pattern.replaceAll("@HEX@", RegexUtils.HEX);
         pattern = pattern.replaceAll("@BIN@", RegexUtils.BIN);
-        pattern = pattern.replaceAll("@INT@", RegexUtils.INT);
+        pattern = pattern.replaceAll("@INT@", RegexUtils.INTEGER);
         pattern = pattern.replaceAll("@REGISTER@", RegexUtils.REGISTER);
 
         return pattern;
     }
 
     static isInteger(str) {
-        return RegexUtils.test(RegexUtils.INT, str);
+        return RegexUtils.test(RegexUtils.INTEGER, str);
     }
 
     static isAddress(str) {
@@ -107,5 +109,9 @@ export default class RegexUtils {
 
     static isMov(str) {
         return RegexUtils.test(RegexUtils.MOV, str);
+    }
+
+    static isInt(str) {
+        return RegexUtils.test(RegexUtils.INT, str);
     }
 }

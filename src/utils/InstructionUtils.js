@@ -55,6 +55,20 @@ export default class InstructionUtils {
             return [line[0], new Instruction(p[1], p[2], [p[3]])];
         }
 
+        if (RegexUtils.isJn(line[1])) {
+
+            const p = RegexUtils.match(RegexUtils.JN, line[1]);
+
+            return [line[0], new Instruction(p[1], p[2], [p[3]])];
+        }
+
+        if (RegexUtils.isInt(line[1])) {
+
+            const p = RegexUtils.match(RegexUtils.INT, line[1]);
+
+            return [line[0], new Instruction(p[1], p[2], [p[3]])];
+        }
+
 
         throw new CompilerError("lexical", line[0], `Line ${line[0]}: the instruction is invalid`);
     }
