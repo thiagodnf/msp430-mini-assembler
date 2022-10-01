@@ -1,3 +1,3 @@
-import {MSP430Assembler} from "./MSP430Assembler";
+import Assembler from "./Assembler";
 
-export {MSP430Assembler};
+export default {Assembler};

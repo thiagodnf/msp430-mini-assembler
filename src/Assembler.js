@@ -2,11 +2,8 @@ import RegexUtils from "./utils/RegexUtils";
 import InstructionUtils from "./utils/InstructionUtils";
 import CompilerError from "./CompilerError";
 
-export default class MSP430Assembler {
+export default class Assembler {
 
-    constructor(){
-
-    }
     parseToLines(str) {
 
         if (!str) {

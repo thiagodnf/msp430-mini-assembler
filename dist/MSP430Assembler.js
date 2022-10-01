@@ -17,7 +17,7 @@ return /******/ (() => { // webpackBootstrap
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MSP430Assembler)
+/* harmony export */   "default": () => (/* binding */ Assembler)
 /* harmony export */ });
 /* harmony import */ var _utils_RegexUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2);
 /* harmony import */ var _utils_InstructionUtils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(3);
@@ -26,11 +26,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class MSP430Assembler {
+class Assembler {
 
-    constructor(){
-
-    }
     parseToLines(str) {
 
         if (!str) {
@@ -565,12 +562,12 @@ var __webpack_exports__ = {};
 (() => {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "MSP430Assembler": () => (/* reexport safe */ _MSP430Assembler__WEBPACK_IMPORTED_MODULE_0__.MSP430Assembler)
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _MSP430Assembler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
+/* harmony import */ var _Assembler__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1);
 
 
-
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({Assembler: _Assembler__WEBPACK_IMPORTED_MODULE_0__["default"]});
 
 })();
 

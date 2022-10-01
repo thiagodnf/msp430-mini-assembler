@@ -1,22 +1,22 @@
-import MSP430Assembler from "../src/MSP430Assembler";
+import Assembler from "../src/Assembler";
 
 test("it should throw exception when undefined", () => {
 
     expect(() => {
-        new MSP430Assembler().compile();
+        new Assembler().compile();
     }).toThrow(Error);
 });
 
 test("it should throw exception when empty", () => {
 
     expect(() => {
-        new MSP430Assembler().compile("   ");
+        new Assembler().compile("   ");
     }).toThrow(Error);
 });
 
 test("it should return all errors", () => {
 
-    const result = new MSP430Assembler().compile(`
+    const result = new Assembler().compile(`
         ;tete
         .test //Error 1
         label1:
@@ -32,7 +32,7 @@ test("it should return all errors", () => {
 
 test("it should return errors if it is moving between memory locations", () => {
 
-    const result = new MSP430Assembler().compile(`
+    const result = new Assembler().compile(`
         main:
             MOV [0x2], [0x34]
     `);
@@ -42,7 +42,7 @@ test("it should return errors if it is moving between memory locations", () => {
 
 test("it should return errors if 'main' is missing", () => {
 
-    const result = new MSP430Assembler().compile(`
+    const result = new Assembler().compile(`
         MOV R2, R3
     `);
 
@@ -51,7 +51,7 @@ test("it should return errors if 'main' is missing", () => {
 
 test("it should return errors if labels are duplicated", () => {
 
-    const result = new MSP430Assembler().compile(`
+    const result = new Assembler().compile(`
         main:
             CMP R2, R3
         label:
@@ -65,7 +65,7 @@ test("it should return errors if labels are duplicated", () => {
 
 test("it should return errors if the label was not found", () => {
 
-    const result = new MSP430Assembler().compile(`
+    const result = new Assembler().compile(`
         main:
             MOV R2, R3
             JMP label2
@@ -79,7 +79,7 @@ test("it should return errors if the label was not found", () => {
 
 test("it should return  no errors if the labels are correct", () => {
 
-    const result = new MSP430Assembler().compile(`
+    const result = new Assembler().compile(`
         main:
             JZ label
         label1: MOV R2, R3
@@ -93,7 +93,7 @@ test("it should return  no errors if the labels are correct", () => {
 
 test("it should return an error because there is a label not associated to a instruction", () => {
 
-    const result = new MSP430Assembler().compile(`
+    const result = new Assembler().compile(`
         main:
         label_1:
             MOV #1, R2
@@ -105,7 +105,7 @@ test("it should return an error because there is a label not associated to a ins
 
 test("it should replace correctly the labels", () => {
 
-    const result = new MSP430Assembler().compile(`
+    const result = new Assembler().compile(`
         main:
             MOV #1, R2
         label_1: JMP label_3
@@ -120,15 +120,13 @@ test("it should replace correctly the labels", () => {
 
 test("it should return no errors", () => {
 
-    const result = new MSP430Assembler().compile(`
+    const result = new Assembler().compile(`
         main:
         label_1:
             MOV #1, R2
         label_2: MOV #1, R15
             MOV #0x213, R3
     `);
-
-    console.log(result);
 
     expect(result.errors.length).toBe(0);
 });
