@@ -2,11 +2,11 @@ export default class RegexUtils {
 
     static ID = "[a-zA-Z]+\\w*";
 
-    static HEX = "0[xX][0-9a-fA-F]+";
+    static HEXADECIMAL = "0[xX][0-9a-fA-F]+";
 
     static INTEGER = "[-+]?\\d+";
 
-    static BIN = "0[bB][01]+";
+    static BINARY = "0[bB][01]+";
 
     static REGISTER = "\\R[0-9]+";
 
@@ -55,12 +55,20 @@ export default class RegexUtils {
         pattern = pattern.replaceAll("@IMMEDIATE@", RegexUtils.IMMEDIATE);
 
         pattern = pattern.replaceAll("@ID@", RegexUtils.ID);
-        pattern = pattern.replaceAll("@HEX@", RegexUtils.HEX);
-        pattern = pattern.replaceAll("@BIN@", RegexUtils.BIN);
+        pattern = pattern.replaceAll("@HEX@", RegexUtils.HEXADECIMAL);
+        pattern = pattern.replaceAll("@BIN@", RegexUtils.BINARY);
         pattern = pattern.replaceAll("@INT@", RegexUtils.INTEGER);
         pattern = pattern.replaceAll("@REGISTER@", RegexUtils.REGISTER);
 
         return pattern;
+    }
+
+    static isBinary(str) {
+        return RegexUtils.test(RegexUtils.BINARY, str);
+    }
+
+    static isHexadecimal(str) {
+        return RegexUtils.test(RegexUtils.HEXADECIMAL, str);
     }
 
     static isInteger(str) {
