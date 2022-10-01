@@ -281,6 +281,7 @@ test("string is MOV", () => {
     // Valid Numbers
 
     expect(RegexUtils.isMov("MOV R1, R2")).toBe(true);
+    expect(RegexUtils.isMov("MOV #1,R2")).toBe(true);
     expect(RegexUtils.isMov("MOV #1, R2")).toBe(true);
     expect(RegexUtils.isMov("MOV #0x123F, R2")).toBe(true);
     expect(RegexUtils.isMov("MOV #0b111, R2")).toBe(true);
