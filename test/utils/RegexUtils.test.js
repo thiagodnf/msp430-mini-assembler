@@ -317,3 +317,12 @@ test("string is MOV", () => {
     expect(RegexUtils.isMov("MOV R2, 0xFFF")).toBe(false);
     expect(RegexUtils.isMov("MOV 0xFFF, [0xFFF]")).toBe(false);
 });
+
+
+test("string is INT", () => {
+
+    // Valid Numbers
+
+    expect(RegexUtils.isInt("INT 10h")).toBe(true);
+
+});
