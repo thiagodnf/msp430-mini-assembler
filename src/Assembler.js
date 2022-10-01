@@ -105,6 +105,10 @@ export default class Assembler {
         return instructions;
     }
 
+    toHex(valueAsInt) {
+        return "0x" + valueAsInt.toString(16).toUpperCase();
+    }
+
     runLabelMaps(instructions) {
 
         let labels = {};
@@ -122,8 +126,7 @@ export default class Assembler {
                     errors.push(new CompilerError("labels", instruction[0], `Line ${instruction[0]}: Label '${label}' is duplicated`));
                 } else {
                     try {
-                        labels[label] = this.findNextInstructions(instructions, i);
-                        labels[label] = `[${labels[label].toString(16)}]`;
+                        labels[label] = `[${this.toHex(this.findNextInstructions(instructions, i))}]`;
                     } catch (error) {
                         errors.push(error);
                     }
